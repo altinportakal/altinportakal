@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KÖYLÜ MÜSÜN YOKSA KENTLİ MİSİN?</title>
+    <title>Köylü mü, Kentli mi?</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -11,13 +11,14 @@
             text-align: center;
             padding: 50px;
             margin: 0;
+            color: #ffffff; /* Ana yazı rengi beyaz */
         }
 
         .container {
-            background-color: #ffffff;
+            background-color: #333333; /* Tablonun arka planı koyu gri */
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Daha belirgin gölge */
             max-width: 700px;
             margin: auto;
             transition: transform 0.3s;
@@ -35,7 +36,7 @@
 
         p {
             font-size: 1.2em;
-            color: #dddddd; /* Açıklama metni açık gri */
+            color: #cccccc; /* Açıklama metni açık gri */
             line-height: 1.5;
             margin-bottom: 30px;
         }
@@ -65,7 +66,7 @@
 
         .result {
             font-size: 1.8em;
-            color: #d32f2f;
+            color: #ff6666; /* Sonuç mesajı kırmızı tonunda */
             margin-top: 40px;
             font-weight: bold;
         }
@@ -94,12 +95,13 @@
     <script>
         const questions = [
             { text: "Yere çöp atar mısın?", correctAnswer: false },
-            { text: "Ana arter bir yolu düğün veya asker konvoyu ile keser misin?", correctAnswer: false },
+            { text: "E5'i düğün veya asker konvoyu sebebiyle keser misin?", correctAnswer: false },
             { text: "Ambulansa yol verir misin?", correctAnswer: true },
             { text: "Yılda en az bir tane kitap okur musun?", correctAnswer: true },
             { text: "Kendi görünüş tarzından farklı bir insanla karşılaşırsan müdahale eder misin?", correctAnswer: false },
             { text: "Toplu taşıma araçlarında yaşlılara veya hamilelere yer verir misin?", correctAnswer: true },
-            { text: "Sıra beklerken öne geçmek için başkalarını iter misin?", correctAnswer: false },
+            { text: "Sıra beklerken öne geçmek için başkalarını iter veya çeşitli şark kurnazlıkları yapar mısın?", correctAnswer: false },
+            { text: "Doktorun odasına hasta varken dalar mısın?", correctAnswer: false },
             { text: "Gürültülü ortamlarda cep telefonunu sessize alır mısın?", correctAnswer: true },
             { text: "Kırmızı ışıkta geçer misin?", correctAnswer: false },
             { text: "Park yeri bulmakta zorlandığında engelli park yerini kullanır mısın?", correctAnswer: false },
@@ -117,7 +119,7 @@
             { text: "Plajda kuma çocuk bezi atar mısın?", correctAnswer: false },
             { text: "Apartmanlar arasında hunharca bağırarak konuşur musun?", correctAnswer: false },
             { text: "Trafikte kırmızı ışıkta geçer misin?", correctAnswer: false },
-            { text: "Kamuya açık alanlarda sigara içer misin?", correctAnswer: false }
+            { text: "Durakta sigara içer misin?", correctAnswer: false }
         ];
 
         let currentQuestion = 0;
@@ -137,14 +139,14 @@
                 `;
             } else {
                 document.getElementById('questionContainer').style.display = 'none';
-                document.getElementById('resultContainer').innerText = 'TEBRİKLER KENTLİSİNİZ. KÖYDEYSENİZ KENTE GÖÇEBİLİRSİNİZ. KENTTEYSENİZ OTURUN OTURDUĞUNUZ YERDE.';
+                document.getElementById('resultContainer').innerText = 'MAALESEF KENTLİSİNİZ. Size hayat zor.';
                 document.getElementById('videoContainer').style.display = 'block';
             }
         }
 
         function handleAnswer(answer) {
             if (answer !== questions[currentQuestion].correctAnswer) {
-                document.getElementById('resultContainer').innerText = 'KÖYLÜ! KÖYÜNE GERİ DÖN!';
+                document.getElementById('resultContainer').innerText = 'TEBRİKLER KÖYLÜSÜNÜZ. İpimle kuşağım...';
                 document.getElementById('questionContainer').style.display = 'none';
                 document.getElementById('videoContainer').style.display = 'block';
             } else {
