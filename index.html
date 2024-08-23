@@ -84,7 +84,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>KÖYLÜ MÜSÜNÜZ, KENTLİ MİSİNİZ?</h1>
+        <h1>KÖYLÜ MÜSÜNÜZ YOKSA KENTLİ MİSİNİZ?</h1>
         <div id="introContainer">
             <p>Bu test, verdiğiniz cevaplara göre köylü mü yoksa kentli mi olduğunuzu belirleyecek. Lütfen sorulara dürüstçe yanıt verin.</p>
             <button class="button" onclick="startTest()">Teste Başla</button>
@@ -148,7 +148,7 @@
 
         function handleAnswer(answer) {
             if (answer !== questions[currentQuestion].correctAnswer) {
-                displayResult("KÖYLÜ! KÖYÜNE GERİ DÖN!");
+                displayResult("KÖYLÜSÜNÜZ");
             } else {
                 currentQuestion++;
                 loadQuestion();
