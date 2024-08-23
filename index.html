@@ -71,6 +71,12 @@
             font-weight: bold;
         }
 
+        .stats {
+            margin-top: 20px;
+            color: #cccccc; /* İstatistik metni açık gri */
+            font-size: 1.2em;
+        }
+
         .video-container {
             margin-top: 20px;
         }
@@ -87,6 +93,7 @@
             <!-- Sorular buraya yüklenecek -->
         </div>
         <div id="resultContainer" class="result"></div>
+        <div id="statsContainer" class="stats"></div>
         <div id="videoContainer" class="video-container" style="display:none;">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/LkQ8npv_sqc?si=39ky4gqt0VfUytKy&amp;clip=UgkxM5_ThU93ydDulFy8AZrWQIH1hljstd9z&amp;clipt=ENSKswEY0py1AQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
@@ -95,13 +102,12 @@
     <script>
         const questions = [
             { text: "Yere çöp atar mısın?", correctAnswer: false },
-            { text: "E5'i düğün veya asker konvoyu sebebiyle keser misin?", correctAnswer: false },
+            { text: "Ana arter bir yolu düğün veya asker konvoyu ile keser misin?", correctAnswer: false },
             { text: "Ambulansa yol verir misin?", correctAnswer: true },
             { text: "Yılda en az bir tane kitap okur musun?", correctAnswer: true },
             { text: "Kendi görünüş tarzından farklı bir insanla karşılaşırsan müdahale eder misin?", correctAnswer: false },
             { text: "Toplu taşıma araçlarında yaşlılara veya hamilelere yer verir misin?", correctAnswer: true },
-            { text: "Sıra beklerken öne geçmek için başkalarını iter veya çeşitli şark kurnazlıkları yapar mısın?", correctAnswer: false },
-            { text: "Doktorun odasına hasta varken dalar mısın?", correctAnswer: false },
+            { text: "Sıra beklerken öne geçmek için başkalarını iter misin?", correctAnswer: false },
             { text: "Gürültülü ortamlarda cep telefonunu sessize alır mısın?", correctAnswer: true },
             { text: "Kırmızı ışıkta geçer misin?", correctAnswer: false },
             { text: "Park yeri bulmakta zorlandığında engelli park yerini kullanır mısın?", correctAnswer: false },
@@ -119,7 +125,7 @@
             { text: "Plajda kuma çocuk bezi atar mısın?", correctAnswer: false },
             { text: "Apartmanlar arasında hunharca bağırarak konuşur musun?", correctAnswer: false },
             { text: "Trafikte kırmızı ışıkta geçer misin?", correctAnswer: false },
-            { text: "Durakta sigara içer misin?", correctAnswer: false }
+            { text: "Kamuya açık alanlarda sigara içer misin?", correctAnswer: false }
         ];
 
         let currentQuestion = 0;
@@ -138,21 +144,55 @@
                     <button class="button" onclick="handleAnswer(false)">Hayır</button>
                 `;
             } else {
-                document.getElementById('questionContainer').style.display = 'none';
-                document.getElementById('resultContainer').innerText = 'MAALESEF KENTLİSİNİZ. Size hayat zor.';
-                document.getElementById('videoContainer').style.display = 'block';
+                displayResult("TEBRİKLER KENTLİSİNİZ.");
             }
         }
 
         function handleAnswer(answer) {
             if (answer !== questions[currentQuestion].correctAnswer) {
-                document.getElementById('resultContainer').innerText = 'TEBRİKLER KÖYLÜSÜNÜZ. İpimle kuşağım...';
-                document.getElementById('questionContainer').style.display = 'none';
-                document.getElementById('videoContainer').style.display = 'block';
+                displayResult("KÖYLÜ! KÖYÜNE GERİ DÖN!");
             } else {
                 currentQuestion++;
                 loadQuestion();
             }
+        }
+
+        function displayResult(message) {
+            document.getElementById('questionContainer').style.display = 'none';
+            document.getElementById('resultContainer').innerText = message;
+            document.getElementById('videoContainer').style.display = 'block';
+
+            updateStats(message.includes("KÖYLÜSÜNÜZ"));
+            displayStats();
+        }
+
+        function updateStats(isKoylu) {
+            let totalTests = localStorage.getItem("totalTests") || 0;
+            let totalKoylu = localStorage.getItem("totalKoylu") || 0;
+            let totalKentli = localStorage.getItem("totalKentli") || 0;
+
+            totalTests = parseInt(totalTests) + 1;
+            if (isKoylu) {
+                totalKoylu = parseInt(totalKoylu) + 1;
+            } else {
+                totalKentli = parseInt(totalKentli) + 1;
+            }
+
+            localStorage.setItem("totalTests", totalTests);
+            localStorage.setItem("totalKoylu", totalKoylu);
+            localStorage.setItem("totalKentli", totalKentli);
+        }
+
+        function displayStats() {
+            const totalTests = localStorage.getItem("totalTests") || 0;
+            const totalKoylu = localStorage.getItem("totalKoylu") || 0;
+            const totalKentli = localStorage.getItem("totalKentli") || 0;
+
+            document.getElementById('statsContainer').innerHTML = `
+                Toplam Test Sayısı: ${totalTests} <br>
+                Köylü Olanlar: ${totalKoylu} <br>
+                Kentli Olanlar: ${totalKentli}
+            `;
         }
     </script>
 </body>
