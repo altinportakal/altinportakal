@@ -6,47 +6,79 @@
     <title>Köylü mü, Kentli mi?</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eceff1;
             text-align: center;
             padding: 50px;
+            margin: 0;
         }
+
         .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
             margin: auto;
+            transition: transform 0.3s;
         }
+
+        .container:hover {
+            transform: scale(1.01);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #555555;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
         .question {
-            font-size: 20px;
-            margin: 20px 0;
+            font-size: 1.5em;
+            margin: 30px 0;
+            color: #333333;
         }
+
         .button {
-            padding: 10px 20px;
-            margin: 10px;
-            background-color: #4CAF50;
+            padding: 12px 25px;
+            margin: 15px;
+            background-color: #00796b;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 25px;
             cursor: pointer;
             font-size: 18px;
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
+
         .button:hover {
-            background-color: #45a049;
+            background-color: #004d40;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
+
         .result {
-            font-size: 24px;
-            color: red;
-            margin-top: 20px;
+            font-size: 1.8em;
+            color: #d32f2f;
+            margin-top: 40px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Köylü mü, Kentli mi?</h1>
-        <div id="questionContainer">
+        <div id="introContainer">
+            <p>Bu test, verdiğiniz cevaplara göre köylü mü yoksa kentli mi olduğunuzu belirleyecek. Lütfen sorulara dürüstçe yanıt verin.</p>
+            <button class="button" onclick="startTest()">Teste Başla</button>
+        </div>
+        <div id="questionContainer" style="display:none;">
             <!-- Sorular buraya yüklenecek -->
         </div>
         <div id="resultContainer" class="result"></div>
@@ -54,39 +86,58 @@
 
     <script>
         const questions = [
-            "Yere çöp atar mısın?",
-            "Ana arter bir yolu düğün veya asker konvoyu ile keser misin?",
-            "Ambulansa yol verir misin?",
-            "Yılda en az bir tane kitap okur musun?",
-            "Kendi görünüş tarzından farklı bir insanla karşılaşırsan müdahale eder misin?"
+            {
+                text: "Yere çöp atar mısın?",
+                correctAnswer: false // Olumlu davranış: Hayır
+            },
+            {
+                text: "Ana arter bir yolu düğün veya asker konvoyu ile keser misin?",
+                correctAnswer: false // Olumlu davranış: Hayır
+            },
+            {
+                text: "Ambulansa yol verir misin?",
+                correctAnswer: true // Olumlu davranış: Evet
+            },
+            {
+                text: "Yılda en az bir tane kitap okur musun?",
+                correctAnswer: true // Olumlu davranış: Evet
+            },
+            {
+                text: "Kendi görünüş tarzından farklı bir insanla karşılaşırsan müdahale eder misin?",
+                correctAnswer: false // Olumlu davranış: Hayır
+            }
         ];
 
         let currentQuestion = 0;
 
+        function startTest() {
+            document.getElementById('introContainer').style.display = 'none';
+            document.getElementById('questionContainer').style.display = 'block';
+            loadQuestion();
+        }
+
         function loadQuestion() {
             if (currentQuestion < questions.length) {
                 document.getElementById('questionContainer').innerHTML = `
-                    <div class="question">${questions[currentQuestion]}</div>
+                    <div class="question">${questions[currentQuestion].text}</div>
                     <button class="button" onclick="handleAnswer(true)">Evet</button>
                     <button class="button" onclick="handleAnswer(false)">Hayır</button>
                 `;
             } else {
                 document.getElementById('questionContainer').style.display = 'none';
-                document.getElementById('resultContainer').innerText = 'Testi tamamladınız!';
+                document.getElementById('resultContainer').innerText = 'TEBRİKLER KENTLİSİNİZ. KÖYDEYSENİZ KENTE GÖÇEBİLİRSİNİZ. KENTTEYSENİZ OTURUN OTURDUĞUNUZ YERDE.';
             }
         }
 
         function handleAnswer(answer) {
-            if (!answer) {
-                document.getElementById('resultContainer').innerText = 'Sen bir köylüsün, lütfen geldiğin köye geri dön.';
+            if (answer !== questions[currentQuestion].correctAnswer) {
+                document.getElementById('resultContainer').innerText = 'KÖYLÜ! KÖYÜNE GERİ DÖN!';
                 document.getElementById('questionContainer').style.display = 'none';
             } else {
                 currentQuestion++;
                 loadQuestion();
             }
         }
-
-        loadQuestion();
     </script>
 </body>
 </html>
