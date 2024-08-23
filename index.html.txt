@@ -1,7 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Köylü mü, Kentli mi?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        .question {
+            font-size: 20px;
+            margin: 20px 0;
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            font-size: 24px;
+            color: red;
+            margin-top: 20px;
+        }
+    </style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <div class="container">
+        <h1>Köylü mü, Kentli mi?</h1>
+        <div id="questionContainer">
+            <!-- Sorular buraya yüklenecek -->
+        </div>
+        <div id="resultContainer" class="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            "Yere çöp atar mısın?",
+            "Ana arter bir yolu düğün veya asker konvoyu ile keser misin?",
+            "Ambulansa yol verir misin?",
+            "Yılda en az bir tane kitap okur musun?",
+            "Kendi görünüş tarzından farklı bir insanla karşılaşırsan müdahale eder misin?"
+        ];
+
+        let currentQuestion = 0;
+
+        function loadQuestion() {
+            if (currentQuestion < questions.length) {
+                document.getElementById('questionContainer').innerHTML = `
+                    <div class="question">${questions[currentQuestion]}</div>
+                    <button class="button" onclick="handleAnswer(true)">Evet</button>
+                    <button class="button" onclick="handleAnswer(false)">Hayır</button>
+                `;
+            } else {
+                document.getElementById('questionContainer').style.display = 'none';
+                document.getElementById('resultContainer').innerText = 'Testi tamamladınız!';
+            }
+        }
+
+        function handleAnswer(answer) {
+            if (!answer) {
+                document.getElementById('resultContainer').innerText = 'Sen bir köylüsün, lütfen geldiğin köye geri dön.';
+                document.getElementById('questionContainer').style.display = 'none';
+            } else {
+                currentQuestion++;
+                loadQuestion();
+            }
+        }
+
+        loadQuestion();
+    </script>
 </body>
 </html>
