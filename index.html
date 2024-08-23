@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Köylü mü, Kentli mi?</title>
+    <title>KÖYLÜ MÜSÜN YOKSA KENTLİ MİSİN?</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #eceff1;
+            background-color: #000000; /* Arka plan siyah */
             text-align: center;
             padding: 50px;
             margin: 0;
@@ -29,13 +29,13 @@
 
         h1 {
             font-size: 2.5em;
-            color: #333333;
+            color: #ffffff; /* Başlık beyaz */
             margin-bottom: 20px;
         }
 
         p {
             font-size: 1.2em;
-            color: #555555;
+            color: #dddddd; /* Açıklama metni açık gri */
             line-height: 1.5;
             margin-bottom: 30px;
         }
@@ -43,7 +43,7 @@
         .question {
             font-size: 1.5em;
             margin: 30px 0;
-            color: #333333;
+            color: #ffffff; /* Soru metni beyaz */
         }
 
         .button {
@@ -69,6 +69,10 @@
             margin-top: 40px;
             font-weight: bold;
         }
+
+        .video-container {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -82,30 +86,38 @@
             <!-- Sorular buraya yüklenecek -->
         </div>
         <div id="resultContainer" class="result"></div>
+        <div id="videoContainer" class="video-container" style="display:none;">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/LkQ8npv_sqc?si=39ky4gqt0VfUytKy&amp;clip=UgkxM5_ThU93ydDulFy8AZrWQIH1hljstd9z&amp;clipt=ENSKswEY0py1AQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
     </div>
 
     <script>
         const questions = [
-            {
-                text: "Yere çöp atar mısın?",
-                correctAnswer: false // Olumlu davranış: Hayır
-            },
-            {
-                text: "Ana arter bir yolu düğün veya asker konvoyu ile keser misin?",
-                correctAnswer: false // Olumlu davranış: Hayır
-            },
-            {
-                text: "Ambulansa yol verir misin?",
-                correctAnswer: true // Olumlu davranış: Evet
-            },
-            {
-                text: "Yılda en az bir tane kitap okur musun?",
-                correctAnswer: true // Olumlu davranış: Evet
-            },
-            {
-                text: "Kendi görünüş tarzından farklı bir insanla karşılaşırsan müdahale eder misin?",
-                correctAnswer: false // Olumlu davranış: Hayır
-            }
+            { text: "Yere çöp atar mısın?", correctAnswer: false },
+            { text: "Ana arter bir yolu düğün veya asker konvoyu ile keser misin?", correctAnswer: false },
+            { text: "Ambulansa yol verir misin?", correctAnswer: true },
+            { text: "Yılda en az bir tane kitap okur musun?", correctAnswer: true },
+            { text: "Kendi görünüş tarzından farklı bir insanla karşılaşırsan müdahale eder misin?", correctAnswer: false },
+            { text: "Toplu taşıma araçlarında yaşlılara veya hamilelere yer verir misin?", correctAnswer: true },
+            { text: "Sıra beklerken öne geçmek için başkalarını iter misin?", correctAnswer: false },
+            { text: "Gürültülü ortamlarda cep telefonunu sessize alır mısın?", correctAnswer: true },
+            { text: "Kırmızı ışıkta geçer misin?", correctAnswer: false },
+            { text: "Park yeri bulmakta zorlandığında engelli park yerini kullanır mısın?", correctAnswer: false },
+            { text: "Bir mağazada sıraya girip bekler misin?", correctAnswer: true },
+            { text: "Trafikte araç kullanırken yayalara yol verir misin?", correctAnswer: true },
+            { text: "Apartman girişinde kapıyı arkadan gelen biri için açık tutar mısın?", correctAnswer: true },
+            { text: "Çevreyi koruma amacıyla geri dönüşüm yapar mısın?", correctAnswer: true },
+            { text: "Market alışverişi yaparken kasiyere yardımcı olur musun?", correctAnswer: true },
+            { text: "Toplu taşımada sırt çantanı çıkartıp yanına alır mısın?", correctAnswer: true },
+            { text: "Evcil hayvanını dışarıda gezdirirken çevreyi temiz tutar mısın?", correctAnswer: true },
+            { text: "Gürültü yaparak komşularını rahatsız eder misin?", correctAnswer: false },
+            { text: "Toplum içinde nezaket kurallarına uyar mısın?", correctAnswer: true },
+            { text: "Sigara izmaritini yere atar mısın?", correctAnswer: false },
+            { text: "Temizliğine önem verir misin?", correctAnswer: true },
+            { text: "Plajda kuma çocuk bezi atar mısın?", correctAnswer: false },
+            { text: "Apartmanlar arasında hunharca bağırarak konuşur musun?", correctAnswer: false },
+            { text: "Trafikte kırmızı ışıkta geçer misin?", correctAnswer: false },
+            { text: "Kamuya açık alanlarda sigara içer misin?", correctAnswer: false }
         ];
 
         let currentQuestion = 0;
@@ -126,6 +138,7 @@
             } else {
                 document.getElementById('questionContainer').style.display = 'none';
                 document.getElementById('resultContainer').innerText = 'TEBRİKLER KENTLİSİNİZ. KÖYDEYSENİZ KENTE GÖÇEBİLİRSİNİZ. KENTTEYSENİZ OTURUN OTURDUĞUNUZ YERDE.';
+                document.getElementById('videoContainer').style.display = 'block';
             }
         }
 
@@ -133,6 +146,7 @@
             if (answer !== questions[currentQuestion].correctAnswer) {
                 document.getElementById('resultContainer').innerText = 'KÖYLÜ! KÖYÜNE GERİ DÖN!';
                 document.getElementById('questionContainer').style.display = 'none';
+                document.getElementById('videoContainer').style.display = 'block';
             } else {
                 currentQuestion++;
                 loadQuestion();
