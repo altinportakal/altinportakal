@@ -88,6 +88,7 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
 </head>
 <body>
     <div class="container">
@@ -112,24 +113,26 @@
     <script>
         // Firebase yapılandırması
         const firebaseConfig = {
-            apiKey: "AIzaSyCYM_jIu6VYNZlLSmXsGFyEgLRlO8p2ovk",
-            authDomain: "koylumusunkentlimisin.firebaseapp.com",
-            databaseURL: "https://koylumusunkentlimisin-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "koylumusunkentlimisin",
-            storageBucket: "koylumusunkentlimisin.appspot.com",
-            messagingSenderId: "699080657680",
-            appId: "1:699080657680:web:212824eff0a541269eb395",
-            measurementId: "G-01JJF4H3LX"
+            apiKey: "API_KEY",
+            authDomain: "PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://PROJECT_ID.firebaseio.com",
+            projectId: "PROJECT_ID",
+            storageBucket: "PROJECT_ID.appspot.com",
+            messagingSenderId: "SENDER_ID",
+            appId: "APP_ID",
+            measurementId: "G-MEASUREMENT_ID"
         };
 
         // Firebase'i başlat
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const analytics = firebase.analytics();
 
         // Kullanıcı ziyaretlerini takip et
         function trackVisitor() {
             const visitorsRef = db.ref('siteStats/totalVisitors');
             visitorsRef.transaction((currentValue) => (currentValue || 0) + 1);
+            analytics.logEvent('visitor_tracked');
         }
 
         // Testi tamamlayanları takip et
@@ -139,6 +142,8 @@
 
             const resultRef = db.ref(`siteStats/${result === "TEBRİKLER, KENTLİSİNİZ!" ? 'totalKentli' : 'totalKoylu'}`);
             resultRef.transaction((currentValue) => (currentValue || 0) + 1);
+
+            analytics.logEvent('test_completed', { result: result });
         }
 
         // Test sonucunu ve yanıtları kaydet
@@ -255,6 +260,9 @@
                     <p>Toplam Kentli Sayısı: ${totalKentli}</p>
                     <p>Toplam Köylü Sayısı: ${totalKoylu}</p>
                 `;
+            }).catch((error) => {
+                console.error("İstatistikleri alırken hata oluştu:", error);
+                statsContainer.innerHTML = `<p>İstatistikleri alırken hata oluştu. Lütfen daha sonra tekrar deneyin.</p>`;
             });
         }
     </script>
