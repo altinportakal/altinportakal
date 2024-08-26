@@ -149,7 +149,7 @@
             const testsRef = db.ref('siteStats/totalTests');
             testsRef.transaction((currentValue) => (currentValue || 0) + 1);
 
-            const resultRef = db.ref(`siteStats/${result === "TEBRİKLER, KENTLİSİNİZ!" ? 'totalKentli' : 'totalKoylu'}`);
+            const resultRef = db.ref(`siteStats/${result === "MAALESEF, KENTLİSİNİZ! Türkiye'de hayat size zor." ? 'totalKentli' : 'totalKoylu'}`);
             resultRef.transaction((currentValue) => (currentValue || 0) + 1);
 
             analytics.logEvent('test_completed', { result: result });
@@ -229,7 +229,7 @@
             });
 
             if (answer !== correctAnswer) {
-                displayResult("MAALESEF, KÖYLÜSÜNÜZ!");
+                displayResult("TEBRİKLER, KÖYLÜSÜNÜZ! Türkiye'de hayat size güzel(!)");
             } else {
                 currentQuestion++;
                 loadQuestion();
