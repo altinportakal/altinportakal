@@ -71,12 +71,6 @@
             font-weight: bold;
         }
 
-        .stats {
-            margin-top: 20px;
-            color: #cccccc; /* İstatistik metni açık gri */
-            font-size: 1.2em;
-        }
-
         .video-container {
             margin-top: 20px;
         }
@@ -93,7 +87,6 @@
             <!-- Sorular buraya yüklenecek -->
         </div>
         <div id="resultContainer" class="result"></div>
-        <div id="statsContainer" class="stats"></div>
         <div id="videoContainer" class="video-container" style="display:none;">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/LkQ8npv_sqc?si=39ky4gqt0VfUytKy&amp;clip=UgkxM5_ThU93ydDulFy8AZrWQIH1hljstd9z&amp;clipt=ENSKswEY0py1AQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
@@ -123,7 +116,7 @@
             { text: "Temizliğine önem verir misin?", correctAnswer: true },
             { text: "Plajda kuma çocuk bezi gömer misin?", correctAnswer: false },
             { text: "Bir apartmandan diğerine hunharca bağırarak konuşur musun?", correctAnswer: false },
-            { text: "Durakta sigara içer misin?", correctAnswer: false }
+            { text: "Durakta sigara içer misin?", correctAnswer: false },
             { text: "Çocuğun parkta elinde kesici veya delici bir alet olduğu halde oynarken, onu hayvan gibi değil insan gibi uyarır ve bunu yapmamasını, başkalarına zarar verebileceğini söyler misin?", correctAnswer: true }
         ];
 
@@ -160,38 +153,6 @@
             document.getElementById('questionContainer').style.display = 'none';
             document.getElementById('resultContainer').innerText = message;
             document.getElementById('videoContainer').style.display = 'block';
-
-            updateStats(message.includes("KÖYLÜSÜNÜZ"));
-            displayStats();
-        }
-
-        function updateStats(isKoylu) {
-            let totalTests = localStorage.getItem("totalTests") || 0;
-            let totalKoylu = localStorage.getItem("totalKoylu") || 0;
-            let totalKentli = localStorage.getItem("totalKentli") || 0;
-
-            totalTests = parseInt(totalTests) + 1;
-            if (isKoylu) {
-                totalKoylu = parseInt(totalKoylu) + 1;
-            } else {
-                totalKentli = parseInt(totalKentli) + 1;
-            }
-
-            localStorage.setItem("totalTests", totalTests);
-            localStorage.setItem("totalKoylu", totalKoylu);
-            localStorage.setItem("totalKentli", totalKentli);
-        }
-
-        function displayStats() {
-            const totalTests = localStorage.getItem("totalTests") || 0;
-            const totalKoylu = localStorage.getItem("totalKoylu") || 0;
-            const totalKentli = localStorage.getItem("totalKentli") || 0;
-
-            document.getElementById('statsContainer').innerHTML = `
-                Toplam Test Sayısı: ${totalTests} <br>
-                Köylü Olanlar: ${totalKoylu} <br>
-                Kentli Olanlar: ${totalKentli}
-            `;
         }
     </script>
 </body>
