@@ -77,12 +77,12 @@
 
         .stats-container {
             margin-top: 20px;
+            display: none;
         }
 
         .stats {
             font-size: 1.2em;
             color: #ccc;
-            display: none;
         }
     </style>
     <!-- Google tag (gtag.js) -->
@@ -113,23 +113,23 @@
         <div id="videoContainer" class="video-container" style="display:none;">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/LkQ8npv_sqc?si=39ky4gqt0VfUytKy&amp;clip=UgkxM5_ThU93ydDulFy8AZrWQIH1hljstd9z&amp;clipt=ENSKswEY0py1AQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
-        <div class="stats-container" id="statsContainer">
+        <div class="stats-container" id="statsContainer" style="display:none;">
             <button class="button" onclick="showStats()">İstatistikleri Gör</button>
-            <div class="stats" id="stats"></div>
+            <div class="stats" id="stats" style="display:none;"></div>
         </div>
     </div>
 
     <script>
         // Firebase yapılandırması
         const firebaseConfig = {
-            apiKey: "API_KEY",
-            authDomain: "PROJECT_ID.firebaseapp.com",
-            databaseURL: "https://PROJECT_ID.firebaseio.com",
-            projectId: "PROJECT_ID",
-            storageBucket: "PROJECT_ID.appspot.com",
-            messagingSenderId: "SENDER_ID",
-            appId: "APP_ID",
-            measurementId: "G-MEASUREMENT_ID"
+            apiKey: "AIzaSyCYM_jIu6VYNZlLSmXsGFyEgLRlO8p2ovk",
+            authDomain: "koylumusunkentlimisin.firebaseapp.com",
+            databaseURL: "https://koylumusunkentlimisin-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "koylumusunkentlimisin",
+            storageBucket: "koylumusunkentlimisin.appspot.com",
+            messagingSenderId: "699080657680",
+            appId: "1:699080657680:web:212824eff0a541269eb395",
+            measurementId: "G-01JJF4H3LX"
         };
 
         // Firebase'i başlat
