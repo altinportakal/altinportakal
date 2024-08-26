@@ -124,6 +124,33 @@
         let currentQuestion = 0;
         let userResponses = [];
 
+        const questions = [
+            { text: "Yere çöp atar mısın?", correctAnswer: false },
+            { text: "E5'i düğün veya asker konvoyu sebebiyle keser ve işi olanının işe geç kalmasına, hasta olanının hastaneye yetişememesine sebep olur musun?", correctAnswer: false },
+            { text: "Ambulansa yol verir misin?", correctAnswer: true },
+            { text: "Yılda en az bir tane kitap okur musun?", correctAnswer: true },
+            { text: "Senden farklı tarzda giyinmiş bir insanla karşılaşırsan, bu kişinin görüşünüşüne müdahale eder misin?", correctAnswer: false },
+            { text: "Toplu taşıma araçlarında yaşlılara veya hamilelere yer verir misin?", correctAnswer: true },
+            { text: "Sıra beklerken öne geçmek için başkalarını iter, sıraya kaynak yapar mısın?", correctAnswer: false },
+            { text: "Doktor odasında hasta olduğunu bile bile odaya dalar mısın?", correctAnswer: false },
+            { text: "Kırmızı ışıkta geçer misin?", correctAnswer: false },
+            { text: "Park yeri bulmakta zorlandığında engelli park yerini kullanır mısın?", correctAnswer: false },
+            { text: "Trafikte araç kullanırken yayalara yol verir misin?", correctAnswer: true },
+            { text: "Apartman girişinde kapıyı arkadan gelen biri için açık tutar mısın?", correctAnswer: true },
+            { text: "Apartmandan çıkmadan sigarayı yakar mısın?", correctAnswer: false },
+            { text: "Çevreyi koruma amacıyla geri dönüşüm yapar mısın?", correctAnswer: true },
+            { text: "Toplu taşımada sırt çantanı çıkartıp yanına alır mısın?", correctAnswer: true },
+            { text: "Evcil hayvanını dışarıda gezdirirken çevreyi temiz tutar mısın?", correctAnswer: true },
+            { text: "Gürültü yaparak komşularını rahatsız eder misin?", correctAnswer: false },
+            { text: "Toplum içinde nezaket kurallarına uyar mısın?", correctAnswer: true },
+            { text: "Sigara izmaritini yere atar mısın?", correctAnswer: false },
+            { text: "Temizliğine önem verir misin?", correctAnswer: true },
+            { text: "Plajda kuma çocuk bezi gömer misin?", correctAnswer: false },
+            { text: "Bir apartmandan diğerine hunharca bağırarak konuşur musun?", correctAnswer: false },
+            { text: "Durakta sigara içer misin?", correctAnswer: false },
+            { text: "Çocuğun parkta elinde kesici veya delici bir alet olduğu halde oynarken, onu hayvan gibi değil insan gibi uyarır ve bunu yapmamasını, başkalarına zarar verebileceğini söyler misin?", correctAnswer: true }
+        ];
+
         function startTest() {
             document.getElementById('introContainer').style.display = 'none';
             document.getElementById('questionContainer').style.display = 'block';
@@ -186,34 +213,5 @@
             <iframe width="560" height="315" src="https://www.youtube.com/embed/LkQ8npv_sqc?si=39ky4gqt0VfUytKy&amp;clip=UgkxM5_ThU93ydDulFy8AZrWQIH1hljstd9z&amp;clipt=ENSKswEY0py1AQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
     </div>
-
-    <script>
-        const questions = [
-            { text: "Yere çöp atar mısın?", correctAnswer: false },
-            { text: "E5'i düğün veya asker konvoyu sebebiyle keser ve işi olanının işe geç kalmasına, hasta olanının hastaneye yetişememesine sebep olur musun?", correctAnswer: false },
-            { text: "Ambulansa yol verir misin?", correctAnswer: true },
-            { text: "Yılda en az bir tane kitap okur musun?", correctAnswer: true },
-            { text: "Senden farklı tarzda giyinmiş bir insanla karşılaşırsan, bu kişinin görüşünüşüne müdahale eder misin?", correctAnswer: false },
-            { text: "Toplu taşıma araçlarında yaşlılara veya hamilelere yer verir misin?", correctAnswer: true },
-            { text: "Sıra beklerken öne geçmek için başkalarını iter, sıraya kaynak yapar mısın?", correctAnswer: false },
-            { text: "Doktor odasında hasta olduğunu bile bile odaya dalar mısın?", correctAnswer: false },
-            { text: "Kırmızı ışıkta geçer misin?", correctAnswer: false },
-            { text: "Park yeri bulmakta zorlandığında engelli park yerini kullanır mısın?", correctAnswer: false },
-            { text: "Trafikte araç kullanırken yayalara yol verir misin?", correctAnswer: true },
-            { text: "Apartman girişinde kapıyı arkadan gelen biri için açık tutar mısın?", correctAnswer: true },
-            { text: "Apartmandan çıkmadan sigarayı yakar mısın?", correctAnswer: false },
-            { text: "Çevreyi koruma amacıyla geri dönüşüm yapar mısın?", correctAnswer: true },
-            { text: "Toplu taşımada sırt çantanı çıkartıp yanına alır mısın?", correctAnswer: true },
-            { text: "Evcil hayvanını dışarıda gezdirirken çevreyi temiz tutar mısın?", correctAnswer: true },
-            { text: "Gürültü yaparak komşularını rahatsız eder misin?", correctAnswer: false },
-            { text: "Toplum içinde nezaket kurallarına uyar mısın?", correctAnswer: true },
-            { text: "Sigara izmaritini yere atar mısın?", correctAnswer: false },
-            { text: "Temizliğine önem verir misin?", correctAnswer: true },
-            { text: "Plajda kuma çocuk bezi gömer misin?", correctAnswer: false },
-            { text: "Bir apartmandan diğerine hunharca bağırarak konuşur musun?", correctAnswer: false },
-            { text: "Durakta sigara içer misin?", correctAnswer: false },
-            { text: "Çocuğun parkta elinde kesici veya delici bir alet olduğu halde oynarken, onu hayvan gibi değil insan gibi uyarır ve bunu yapmamasını, başkalarına zarar verebileceğini söyler misin?", correctAnswer: true }
-        ];
-    </script>
 </body>
 </html>
