@@ -166,7 +166,7 @@
                     <button class="button" onclick="handleAnswer(false)">Hayır</button>
                 `;
             } else {
-                displayResult("TEBRİKLER KENTLİSİNİZ.");
+                displayResult("MAALESEF KENTLİSİNİZ.");
             }
         }
 
@@ -181,7 +181,7 @@
             });
 
             if (answer !== correctAnswer) {
-                displayResult("KÖYLÜSÜNÜZ");
+                displayResult("TEBRİKLER KÖYLÜSÜNÜZ. Hayat size güzel(!)");
             } else {
                 currentQuestion++;
                 loadQuestion();
