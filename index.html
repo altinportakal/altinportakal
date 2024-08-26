@@ -94,9 +94,13 @@
             <p>Bu test, verdiğiniz cevaplara göre köylü mü yoksa kentli mi olduğunuzu belirleyecek. Lütfen sorulara dürüstçe yanıt verin.</p>
             <button class="button" onclick="startTest()">Teste Başla</button>
         </div>
-        <div id="questionContainer" style="display:none;">
-            <!-- Sorular buraya yüklenecek -->
-        </div>
+        <form id="questionForm" style="display:none;" onsubmit="return validateForm()">
+            <div id="questionContainer">
+                <!-- Sorular buraya yüklenecek -->
+            </div>
+            <div id="errorContainer" class="error" style="display:none;"></div>
+            <button type="submit" class="button">Sonucu Göster</button>
+        </form>
         <div id="resultContainer" class="result" style="display:none;"></div>
         <div id="videoContainer" class="video-container" style="display:none;">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/LkQ8npv_sqc?si=39ky4gqt0VfUytKy&amp;clip=UgkxM5_ThU93ydDulFy8AZrWQIH1hljstd9z&amp;clipt=ENSKswEY0py1AQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
