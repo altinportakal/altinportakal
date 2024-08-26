@@ -75,6 +75,101 @@
             margin-top: 20px;
         }
     </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <script>
+        // Firebase yapılandırmasını buraya yapıştırın
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYM_jIu6VYNZlLSmXsGFyEgLRlO8p2ovk",
+            authDomain: "koylumusunkentlimisin.firebaseapp.com",
+            databaseURL: "https://koylumusunkentlimisin-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "koylumusunkentlimisin",
+            storageBucket: "koylumusunkentlimisin.appspot.com",
+            messagingSenderId: "699080657680",
+            appId: "1:699080657680:web:212824eff0a541269eb395",
+            measurementId: "G-01JJF4H3LX"
+        };
+
+        // Firebase'i başlat
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Kullanıcı ziyaretlerini takip et
+        function trackVisitor() {
+            const visitorsRef = db.ref('siteStats/totalVisitors');
+            visitorsRef.transaction((currentValue) => {
+                return (currentValue || 0) + 1;
+            });
+        }
+
+        // Testi tamamlayanları takip et
+        function trackTestCompletion() {
+            const testsRef = db.ref('siteStats/totalTests');
+            testsRef.transaction((currentValue) => {
+                return (currentValue || 0) + 1;
+            });
+        }
+
+        // Test sonucunu ve yanıtları kaydet
+        function saveTestResult(result, responses) {
+            const testRef = db.ref('testResults').push();
+            testRef.set({
+                sonuc: result,
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                responses: responses
+            });
+        }
+
+        let currentQuestion = 0;
+        let userResponses = [];
+
+        function startTest() {
+            document.getElementById('introContainer').style.display = 'none';
+            document.getElementById('questionContainer').style.display = 'block';
+            loadQuestion();
+            trackVisitor(); // Ziyaretçi sayısını takip et
+        }
+
+        function loadQuestion() {
+            if (currentQuestion < questions.length) {
+                document.getElementById('questionContainer').innerHTML = `
+                    <div class="question">${questions[currentQuestion].text}</div>
+                    <button class="button" onclick="handleAnswer(true)">Evet</button>
+                    <button class="button" onclick="handleAnswer(false)">Hayır</button>
+                `;
+            } else {
+                displayResult("TEBRİKLER KENTLİSİNİZ.");
+            }
+        }
+
+        function handleAnswer(answer) {
+            const currentQuestionText = questions[currentQuestion].text;
+            const correctAnswer = questions[currentQuestion].correctAnswer;
+            userResponses.push({
+                question: currentQuestionText,
+                userAnswer: answer,
+                correctAnswer: correctAnswer,
+                isCorrect: answer === correctAnswer
+            });
+
+            if (answer !== correctAnswer) {
+                displayResult("KÖYLÜSÜNÜZ");
+            } else {
+                currentQuestion++;
+                loadQuestion();
+            }
+        }
+
+        function displayResult(message) {
+            document.getElementById('questionContainer').style.display = 'none';
+            document.getElementById('resultContainer').innerText = message;
+            document.getElementById('videoContainer').style.display = 'block';
+
+            saveTestResult(message, userResponses); // Test sonucunu ve cevapları kaydet
+            trackTestCompletion(); // Testi tamamlayanları takip et
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -119,41 +214,6 @@
             { text: "Durakta sigara içer misin?", correctAnswer: false },
             { text: "Çocuğun parkta elinde kesici veya delici bir alet olduğu halde oynarken, onu hayvan gibi değil insan gibi uyarır ve bunu yapmamasını, başkalarına zarar verebileceğini söyler misin?", correctAnswer: true }
         ];
-
-        let currentQuestion = 0;
-
-        function startTest() {
-            document.getElementById('introContainer').style.display = 'none';
-            document.getElementById('questionContainer').style.display = 'block';
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            if (currentQuestion < questions.length) {
-                document.getElementById('questionContainer').innerHTML = `
-                    <div class="question">${questions[currentQuestion].text}</div>
-                    <button class="button" onclick="handleAnswer(true)">Evet</button>
-                    <button class="button" onclick="handleAnswer(false)">Hayır</button>
-                `;
-            } else {
-                displayResult("TEBRİKLER KENTLİSİNİZ.");
-            }
-        }
-
-        function handleAnswer(answer) {
-            if (answer !== questions[currentQuestion].correctAnswer) {
-                displayResult("KÖYLÜSÜNÜZ");
-            } else {
-                currentQuestion++;
-                loadQuestion();
-            }
-        }
-
-        function displayResult(message) {
-            document.getElementById('questionContainer').style.display = 'none';
-            document.getElementById('resultContainer').innerText = message;
-            document.getElementById('videoContainer').style.display = 'block';
-        }
     </script>
 </body>
 </html>
