@@ -225,6 +225,17 @@
 
             saveTestResult(message, userResponses); // Test sonucunu ve cevapları kaydet
             trackTestCompletion(); // Testi tamamlayanları takip et
+
+            // Test verilerini kullanıcıya göster
+            const resultDetails = userResponses.map(response => `
+                <div>
+                    <strong>Soru:</strong> ${response.question}<br>
+                    <strong>Cevabınız:</strong> ${response.userAnswer ? 'Evet' : 'Hayır'}<br>
+                    <strong>Doğru Cevap:</strong> ${response.correctAnswer ? 'Evet' : 'Hayır'}<br>
+                    <strong>Sonuç:</strong> ${response.isCorrect ? 'Doğru' : 'Yanlış'}
+                </div>
+            `).join('<br>');
+            document.getElementById('resultContainer').innerHTML += `<div>${resultDetails}</div>`;
         }
     </script>
 </body>
