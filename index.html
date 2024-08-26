@@ -94,13 +94,9 @@
             <p>Bu test, verdiğiniz cevaplara göre köylü mü yoksa kentli mi olduğunuzu belirleyecek. Lütfen sorulara dürüstçe yanıt verin.</p>
             <button class="button" onclick="startTest()">Teste Başla</button>
         </div>
-        <form id="questionForm" style="display:none;" onsubmit="return validateForm()">
-            <div id="questionContainer">
-                <!-- Sorular buraya yüklenecek -->
-            </div>
-            <div id="errorContainer" class="error" style="display:none;"></div>
-            <button type="submit" class="button">Sonucu Göster</button>
-        </form>
+        <div id="questionContainer" style="display:none;">
+            <!-- Sorular buraya yüklenecek -->
+        </div>
         <div id="resultContainer" class="result" style="display:none;"></div>
         <div id="videoContainer" class="video-container" style="display:none;">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/LkQ8npv_sqc?si=39ky4gqt0VfUytKy&amp;clip=UgkxM5_ThU93ydDulFy8AZrWQIH1hljstd9z&amp;clipt=ENSKswEY0py1AQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -182,7 +178,7 @@
 
         function startTest() {
             document.getElementById('introContainer').style.display = 'none';
-            document.getElementById('questionForm').style.display = 'block';
+            document.getElementById('questionContainer').style.display = 'block';
             currentQuestion = 0;
             userResponses = [];
             loadQuestion();
@@ -194,25 +190,12 @@
                 const questionObj = questions[currentQuestion];
                 document.getElementById('questionContainer').innerHTML = `
                     <div class="question">${questionObj.text}</div>
-                    <input type="radio" name="answer" value="true" id="answerYes">
-                    <label for="answerYes">Evet</label>
-                    <input type="radio" name="answer" value="false" id="answerNo">
-                    <label for="answerNo">Hayır</label>
+                    <button class="button" onclick="handleAnswer(true)">Evet</button>
+                    <button class="button" onclick="handleAnswer(false)">Hayır</button>
                 `;
             } else {
                 displayResult("TEBRİKLER, KENTLİSİNİZ!");
             }
-        }
-
-        function validateForm() {
-            const answer = document.querySelector('input[name="answer"]:checked');
-            if (!answer) {
-                document.getElementById('errorContainer').style.display = 'block';
-                document.getElementById('errorContainer').innerText = 'Lütfen bir cevap seçin.';
-                return false;
-            }
-            handleAnswer(answer.value === 'true');
-            return false; // Prevent form submission
         }
 
         function handleAnswer(answer) {
@@ -235,7 +218,7 @@
         }
 
         function displayResult(message) {
-            document.getElementById('questionForm').style.display = 'none';
+            document.getElementById('questionContainer').style.display = 'none';
             document.getElementById('resultContainer').style.display = 'block';
             document.getElementById('resultContainer').innerText = message;
             document.getElementById('videoContainer').style.display = 'block';
