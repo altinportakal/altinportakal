@@ -155,5 +155,29 @@
             document.getElementById('videoContainer').style.display = 'block';
         }
     </script>
+    <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCYM_jIu6VYNZlLSmXsGFyEgLRlO8p2ovk",
+    authDomain: "koylumusunkentlimisin.firebaseapp.com",
+    databaseURL: "https://koylumusunkentlimisin-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "koylumusunkentlimisin",
+    storageBucket: "koylumusunkentlimisin.appspot.com",
+    messagingSenderId: "699080657680",
+    appId: "1:699080657680:web:212824eff0a541269eb395",
+    measurementId: "G-01JJF4H3LX"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 </body>
 </html>
