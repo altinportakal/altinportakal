@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KÖYLÜ MÜSÜN, KENTLİ MİSİN?</title>
+</head>
+<body>
+    <h1>KÖYLÜ MÜSÜN YOKSA KENTLİ MİSİN?</h1>
+    <p id="status">Loading...</p>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        // Firebase yapılandırması
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYM_jIu6VYNZlLSmXsGFyEgLRlO8p2ovk",
+            authDomain: "koylumusunkentlimisin.firebaseapp.com",
+            databaseURL: "https://koylumusunkentlimisin-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "koylumusunkentlimisin",
+            storageBucket: "koylumusunkentlimisin.appspot.com",
+            messagingSenderId: "699080657680",
+            appId: "1:699080657680:web:212824eff0a541269eb395",
+            measurementId: "G-01JJF4H3LX"
+        };
+
+        // Firebase'i başlat
+        firebase.initializeApp(firebaseConfig);
+
+        // Test bağlantısı
+        const db = firebase.database();
+        db.ref('test').set({status: 'success'}, function(error) {
+            if (error) {
+                document.getElementById('status').innerText = "Bağlantı hatası: " + error.message;
+            } else {
+                document.getElementById('status').innerText = "Firebase bağlantısı başarılı!";
+            }
+        });
+    </script>
+</body>
+</html>
