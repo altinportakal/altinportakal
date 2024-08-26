@@ -7,18 +7,18 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #000000; /* Arka plan siyah */
+            background-color: #000000;
             text-align: center;
             padding: 50px;
             margin: 0;
-            color: #ffffff; /* Ana yazı rengi beyaz */
+            color: #ffffff;
         }
 
         .container {
-            background-color: #333333; /* Tablonun arka planı koyu gri */
+            background-color: #333333;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Daha belirgin gölge */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             max-width: 700px;
             margin: auto;
             transition: transform 0.3s;
@@ -30,13 +30,13 @@
 
         h1 {
             font-size: 2.5em;
-            color: #ffffff; /* Başlık beyaz */
+            color: #ffffff;
             margin-bottom: 20px;
         }
 
         p {
             font-size: 1.2em;
-            color: #cccccc; /* Açıklama metni açık gri */
+            color: #cccccc;
             line-height: 1.5;
             margin-bottom: 30px;
         }
@@ -44,7 +44,7 @@
         .question {
             font-size: 1.5em;
             margin: 30px 0;
-            color: #ffffff; /* Soru metni beyaz */
+            color: #ffffff;
         }
 
         .button {
@@ -66,7 +66,7 @@
 
         .result {
             font-size: 1.8em;
-            color: #ff6666; /* Sonuç mesajı kırmızı tonunda */
+            color: #ff6666;
             margin-top: 40px;
             font-weight: bold;
         }
@@ -74,7 +74,18 @@
         .video-container {
             margin-top: 20px;
         }
+
+        .error {
+            color: #ff6666;
+            font-size: 1em;
+            margin-top: 10px;
+        }
     </style>
+    <!-- Firebase SDK -->
+    <!-- Firebase App (Core SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <!-- Firebase Realtime Database -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
 <body>
     <div class="container">
@@ -83,22 +94,71 @@
             <p>Bu test, verdiğiniz cevaplara göre köylü mü yoksa kentli mi olduğunuzu belirleyecek. Lütfen sorulara dürüstçe yanıt verin.</p>
             <button class="button" onclick="startTest()">Teste Başla</button>
         </div>
-        <div id="questionContainer" style="display:none;">
-            <!-- Sorular buraya yüklenecek -->
-        </div>
-        <div id="resultContainer" class="result"></div>
+        <form id="questionForm" style="display:none;" onsubmit="return validateForm()">
+            <div id="questionContainer">
+                <!-- Sorular buraya yüklenecek -->
+            </div>
+            <div id="errorContainer" class="error" style="display:none;"></div>
+            <button type="submit" class="button">Sonucu Göster</button>
+        </form>
+        <div id="resultContainer" class="result" style="display:none;"></div>
         <div id="videoContainer" class="video-container" style="display:none;">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/LkQ8npv_sqc?si=39ky4gqt0VfUytKy&amp;clip=UgkxM5_ThU93ydDulFy8AZrWQIH1hljstd9z&amp;clipt=ENSKswEY0py1AQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
     </div>
 
     <script>
+        // Firebase yapılandırması
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYM_jIu6VYNZlLSmXsGFyEgLRlO8p2ovk",
+            authDomain: "koylumusunkentlimisin.firebaseapp.com",
+            databaseURL: "https://koylumusunkentlimisin-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "koylumusunkentlimisin",
+            storageBucket: "koylumusunkentlimisin.appspot.com",
+            messagingSenderId: "699080657680",
+            appId: "1:699080657680:web:212824eff0a541269eb395",
+            measurementId: "G-01JJF4H3LX"
+        };
+
+        // Firebase'i başlat
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Kullanıcı ziyaretlerini takip et
+        function trackVisitor() {
+            const visitorsRef = db.ref('siteStats/totalVisitors');
+            visitorsRef.transaction((currentValue) => {
+                return (currentValue || 0) + 1;
+            });
+        }
+
+        // Testi tamamlayanları takip et
+        function trackTestCompletion() {
+            const testsRef = db.ref('siteStats/totalTests');
+            testsRef.transaction((currentValue) => {
+                return (currentValue || 0) + 1;
+            });
+        }
+
+        // Test sonucunu ve yanıtları kaydet
+        function saveTestResult(result, responses) {
+            const testRef = db.ref('testResults').push();
+            testRef.set({
+                sonuc: result,
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                responses: responses
+            });
+        }
+
+        let currentQuestion = 0;
+        let userResponses = [];
+
         const questions = [
             { text: "Yere çöp atar mısın?", correctAnswer: false },
-            { text: "E5'i düğün veya asker konvoyu sebebiyle keser ve işi olanının işe geç kalmasına, hasta olanının hastaneye yetişememesine sebep olur musun?", correctAnswer: false },
+            { text: "E5'i düğün veya asker konvoyu sebebiyle keser ve işi olanın işe geç kalmasına, hasta olanının hastaneye yetişememesine sebep olur musun?", correctAnswer: false },
             { text: "Ambulansa yol verir misin?", correctAnswer: true },
             { text: "Yılda en az bir tane kitap okur musun?", correctAnswer: true },
-            { text: "Senden farklı tarzda giyinmiş bir insanla karşılaşırsan, bu kişinin görüşünüşüne müdahale eder misin?", correctAnswer: false },
+            { text: "Senden farklı tarzda giyinmiş bir insanla karşılaşırsan, bu kişinin görünüşüne müdahale eder misin?", correctAnswer: false },
             { text: "Toplu taşıma araçlarında yaşlılara veya hamilelere yer verir misin?", correctAnswer: true },
             { text: "Sıra beklerken öne geçmek için başkalarını iter, sıraya kaynak yapar mısın?", correctAnswer: false },
             { text: "Doktor odasında hasta olduğunu bile bile odaya dalar mısın?", correctAnswer: false },
@@ -115,34 +175,59 @@
             { text: "Sigara izmaritini yere atar mısın?", correctAnswer: false },
             { text: "Temizliğine önem verir misin?", correctAnswer: true },
             { text: "Plajda kuma çocuk bezi gömer misin?", correctAnswer: false },
-            { text: "Bir apartmandan diğerine hunharca bağırarak konuşur musun?", correctAnswer: false },
+            { text: "Bir apartmandan diğerine yüksek sesle bağırarak konuşur musun?", correctAnswer: false },
             { text: "Durakta sigara içer misin?", correctAnswer: false },
-            { text: "Çocuğun parkta elinde kesici veya delici bir alet olduğu halde oynarken, onu hayvan gibi değil insan gibi uyarır ve bunu yapmamasını, başkalarına zarar verebileceğini söyler misin?", correctAnswer: true }
+            { text: "Çocuğun parkta elinde kesici veya delici bir alet olduğu halde oynarken, onu nazikçe uyarır ve yapmamasını söyler misin?", correctAnswer: true }
         ];
-
-        let currentQuestion = 0;
 
         function startTest() {
             document.getElementById('introContainer').style.display = 'none';
-            document.getElementById('questionContainer').style.display = 'block';
+            document.getElementById('questionForm').style.display = 'block';
+            currentQuestion = 0;
+            userResponses = [];
             loadQuestion();
+            trackVisitor(); // Ziyaretçi sayısını takip et
         }
 
         function loadQuestion() {
             if (currentQuestion < questions.length) {
+                const questionObj = questions[currentQuestion];
                 document.getElementById('questionContainer').innerHTML = `
-                    <div class="question">${questions[currentQuestion].text}</div>
-                    <button class="button" onclick="handleAnswer(true)">Evet</button>
-                    <button class="button" onclick="handleAnswer(false)">Hayır</button>
+                    <div class="question">${questionObj.text}</div>
+                    <input type="radio" name="answer" value="true" id="answerYes">
+                    <label for="answerYes">Evet</label>
+                    <input type="radio" name="answer" value="false" id="answerNo">
+                    <label for="answerNo">Hayır</label>
                 `;
             } else {
-                displayResult("TEBRİKLER KENTLİSİNİZ.");
+                displayResult("TEBRİKLER, KENTLİSİNİZ!");
             }
         }
 
+        function validateForm() {
+            const answer = document.querySelector('input[name="answer"]:checked');
+            if (!answer) {
+                document.getElementById('errorContainer').style.display = 'block';
+                document.getElementById('errorContainer').innerText = 'Lütfen bir cevap seçin.';
+                return false;
+            }
+            handleAnswer(answer.value === 'true');
+            return false; // Prevent form submission
+        }
+
         function handleAnswer(answer) {
-            if (answer !== questions[currentQuestion].correctAnswer) {
-                displayResult("KÖYLÜSÜNÜZ");
+            const currentQuestionObj = questions[currentQuestion];
+            const correctAnswer = currentQuestionObj.correctAnswer;
+
+            userResponses.push({
+                question: currentQuestionObj.text,
+                userAnswer: answer,
+                correctAnswer: correctAnswer,
+                isCorrect: answer === correctAnswer
+            });
+
+            if (answer !== correctAnswer) {
+                displayResult("MAALESEF, KÖYLÜSÜNÜZ!");
             } else {
                 currentQuestion++;
                 loadQuestion();
@@ -150,9 +235,13 @@
         }
 
         function displayResult(message) {
-            document.getElementById('questionContainer').style.display = 'none';
+            document.getElementById('questionForm').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'block';
             document.getElementById('resultContainer').innerText = message;
             document.getElementById('videoContainer').style.display = 'block';
+
+            saveTestResult(message, userResponses); // Test sonucunu ve cevapları kaydet
+            trackTestCompletion(); // Testi tamamlayanları takip et
         }
     </script>
 </body>
